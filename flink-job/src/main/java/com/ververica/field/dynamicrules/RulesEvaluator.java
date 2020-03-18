@@ -23,6 +23,7 @@ import static com.ververica.field.config.Parameters.LOCAL_EXECUTION;
 import static com.ververica.field.config.Parameters.MIN_PAUSE_BETWEEN_CHECKPOINTS;
 import static com.ververica.field.config.Parameters.OUT_OF_ORDERNESS;
 import static com.ververica.field.config.Parameters.RULES_SOURCE;
+import static com.ververica.field.config.Parameters.SINK_PARALLELISM;
 import static com.ververica.field.config.Parameters.SOURCE_PARALLELISM;
 
 import com.ververica.field.config.Config;
@@ -107,13 +108,15 @@ public class RulesEvaluator {
 
     currentRulesJson.print();
 
+    int sinkParallelism = config.get(SINK_PARALLELISM);
+
     alertsJson
         .addSink(AlertsSink.createAlertsSink(config))
-        .setParallelism(1)
+        .setParallelism(sinkParallelism)
         .name("Alerts JSON Sink");
     currentRulesJson
         .addSink(CurrentRulesSink.createRulesSink(config))
-        .setParallelism(1)
+        .setParallelism(sinkParallelism)
         .name("Rules Export Sink");
 
     DataStream<String> latencies =

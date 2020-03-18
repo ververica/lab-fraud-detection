@@ -94,6 +94,7 @@ public class Parameters {
   public static final Param<Boolean> LOCAL_EXECUTION = Param.bool("local", false);
 
   public static final Param<Integer> SOURCE_PARALLELISM = Param.integer("source-parallelism", 2);
+  public static final Param<Integer> SINK_PARALLELISM = Param.integer("sink-parallelism", 1);
   public static final Param<Integer> CHECKPOINT_INTERVAL =
       Param.integer("checkpoint-interval", 60_000_0);
   public static final Param<Integer> MIN_PAUSE_BETWEEN_CHECKPOINTS =
@@ -128,6 +129,7 @@ public class Parameters {
           SOCKET_PORT,
           RECORDS_PER_SECOND,
           SOURCE_PARALLELISM,
+          SINK_PARALLELISM,
           CHECKPOINT_INTERVAL,
           MIN_PAUSE_BETWEEN_CHECKPOINTS,
           OUT_OF_ORDERNESS);
