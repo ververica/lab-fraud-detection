@@ -114,16 +114,8 @@ public class DynamicAlertFunction
       BigDecimal aggregateResult = aggregator.getLocalValue();
       boolean ruleResult = rule.apply(aggregateResult);
 
-      ctx.output(
-          Descriptors.demoSinkTag,
-          "Rule "
-              + rule.getRuleId()
-              + " | "
-              + value.getKey()
-              + " : "
-              + aggregateResult.toString()
-              + " -> "
-              + ruleResult);
+      log.trace(
+          "Rule {} | {} : {} -> {}", rule.getRuleId(), value.getKey(), aggregateResult, ruleResult);
 
       if (ruleResult) {
         if (COUNT_WITH_RESET.equals(rule.getAggregateFieldName())) {
