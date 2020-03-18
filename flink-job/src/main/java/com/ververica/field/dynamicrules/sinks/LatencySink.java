@@ -28,6 +28,7 @@ import com.ververica.field.dynamicrules.KafkaUtils;
 import java.io.IOException;
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
 import org.apache.flink.streaming.api.functions.sink.PrintSinkFunction;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.connectors.gcp.pubsub.PubSubSink;
@@ -53,6 +54,8 @@ public class LatencySink {
             .build();
       case STDOUT:
         return new PrintSinkFunction<>(true);
+      case DISCARD:
+        return new DiscardingSink<>();
       default:
         throw new IllegalArgumentException(
             "Source \"" + latencySinkType + "\" unknown. Known values are:" + Type.values());
@@ -62,7 +65,8 @@ public class LatencySink {
   public enum Type {
     KAFKA("Latency Sink (Kafka)"),
     PUBSUB("Latency Sink (Pub/Sub)"),
-    STDOUT("Latency Sink (Std. Out)");
+    STDOUT("Latency Sink (Std. Out)"),
+    DISCARD("Latency Sink (Discard)");
 
     private String name;
 

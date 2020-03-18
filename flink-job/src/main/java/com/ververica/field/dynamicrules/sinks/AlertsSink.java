@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
 import org.apache.flink.streaming.api.functions.sink.PrintSinkFunction;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.connectors.gcp.pubsub.PubSubSink;
@@ -56,6 +57,8 @@ public class AlertsSink {
             .build();
       case STDOUT:
         return new PrintSinkFunction<>(true);
+      case DISCARD:
+        return new DiscardingSink<>();
       default:
         throw new IllegalArgumentException(
             "Source \"" + alertsSinkType + "\" unknown. Known values are:" + Type.values());
@@ -69,7 +72,8 @@ public class AlertsSink {
   public enum Type {
     KAFKA("Alerts Sink (Kafka)"),
     PUBSUB("Alerts Sink (Pub/Sub)"),
-    STDOUT("Alerts Sink (Std. Out)");
+    STDOUT("Alerts Sink (Std. Out)"),
+    DISCARD("Alerts Sink (Discard)");
 
     private String name;
 
