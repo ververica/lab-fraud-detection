@@ -47,7 +47,6 @@ ext {
     scalaBinaryVersion = '2.11'
     slf4jVersion = '1.7.15'
     log4jVersion = '2.10.0'
-    scalaVersion = '2.11'
     mockitoVersion = '1.10.19'
     junitVersion = '4.12'
     jacksonVersion = '2.10.3'
@@ -103,20 +102,20 @@ dependencies {
 
 
 
-    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    compile "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    compile "org.apache.logging.log4j:log4j-jcl:${log4jVersion}"
 
 
     // Test dependencies here.
     // testCompile "junit:junit:4.12"
 
-    compile "junit:junit:$junitVersion"
-    compile "org.apache.flink:flink-test-utils_$scalaVersion:$flinkVersion"
-    compile "org.apache.flink:flink-streaming-java_$scalaVersion:$flinkVersion:tests"
-    compile "org.apache.flink:flink-runtime_$scalaVersion:$flinkVersion:tests"
-    compile "org.mockito:mockito-all:$mockitoVersion"
+    compile "junit:junit:${junitVersion}"
+    compile "org.apache.flink:flink-test-utils_${scalaBinaryVersion}:${flinkVersion}"
+    compile "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}:tests"
+    compile "org.apache.flink:flink-runtime_${scalaBinaryVersion}:${flinkVersion}:tests"
+    compile "org.mockito:mockito-all:${mockitoVersion}"
 
     //Project dependencies
     compile "org.projectlombok:lombok:1.18.4"
@@ -124,8 +123,8 @@ dependencies {
 //    compileOnly 'org.projectlombok:lombok:1.18.10'
 //    annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
-    flinkShadowJar "org.apache.flink:flink-connector-kafka-0.11_$scalaBinaryVersion:$flinkVersion"
-    flinkShadowJar "org.apache.flink:flink-connector-gcp-pubsub_$scalaBinaryVersion:$flinkVersion"
+    flinkShadowJar "org.apache.flink:flink-connector-kafka-0.11_${scalaBinaryVersion}:${flinkVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-gcp-pubsub_${scalaBinaryVersion}:${flinkVersion}"
     flinkShadowJar group: 'com.google.cloud', name: 'google-cloud-pubsub', version: '1.51.0'
 
     flinkShadowJar "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
