@@ -111,14 +111,17 @@ public class RulesEvaluator {
         .addSink(AlertsSink.createAlertsSink(config))
         .setParallelism(1)
         .name("Alerts JSON Sink");
-    currentRulesJson.addSink(CurrentRulesSink.createRulesSink(config)).setParallelism(1);
+    currentRulesJson
+        .addSink(CurrentRulesSink.createRulesSink(config))
+        .setParallelism(1)
+        .name("Rules Export Sink");
 
     DataStream<String> latencies =
         latency
             .timeWindowAll(Time.seconds(10))
             .aggregate(new AverageAggregate())
             .map(String::valueOf);
-    latencies.addSink(LatencySink.createLatencySink(config));
+    latencies.addSink(LatencySink.createLatencySink(config)).name("Latency Sink");
 
     env.execute("Fraud Detection Engine");
   }
