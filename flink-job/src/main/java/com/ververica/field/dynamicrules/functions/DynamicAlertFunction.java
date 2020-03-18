@@ -57,7 +57,6 @@ public class DynamicAlertFunction
   private static final String COUNT_WITH_RESET = "COUNT_WITH_RESET_FLINK";
 
   private static int WIDEST_RULE_KEY = Integer.MIN_VALUE;
-  private static int CLEAR_STATE_COMMAND_KEY = Integer.MIN_VALUE + 1;
 
   private transient MapState<Long, Set<Transaction>> windowState;
   private Meter alertMeter;
@@ -162,9 +161,6 @@ public class DynamicAlertFunction
         break;
       case CLEAR_STATE_ALL:
         ctx.applyToKeyedState(windowStateDescriptor, (key, state) -> state.clear());
-        break;
-      case CLEAR_STATE_ALL_STOP:
-        rulesState.remove(CLEAR_STATE_COMMAND_KEY);
         break;
       case DELETE_RULES_ALL:
         Iterator<Entry<Integer, Rule>> entriesIterator = rulesState.iterator();
