@@ -192,7 +192,7 @@ public class RulesEvaluator {
             RestartStrategies.fixedDelayRestart(
                 10, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));
         break;
-      case KAFKA:
+      default:
         // Default - unlimited restart strategy.
         //        env.setRestartStrategy(RestartStrategies.noRestart());
     }
