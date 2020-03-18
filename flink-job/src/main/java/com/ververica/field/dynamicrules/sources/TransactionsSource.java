@@ -61,9 +61,9 @@ public class TransactionsSource {
   public static DataStream<Transaction> stringsStreamToTransactions(
       DataStream<String> transactionStrings) {
     return transactionStrings
-        .flatMap(new JsonDeserializer<Transaction>(Transaction.class))
+        .flatMap(new JsonDeserializer<>(Transaction.class))
         .returns(Transaction.class)
-        .flatMap(new TimeStamper<Transaction>())
+        .flatMap(new TimeStamper<>())
         .returns(Transaction.class)
         .name("Transactions Deserialization");
   }
