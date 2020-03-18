@@ -28,6 +28,7 @@ import com.ververica.field.config.Config;
 import com.ververica.field.dynamicrules.KafkaUtils;
 import com.ververica.field.dynamicrules.Rule;
 import com.ververica.field.dynamicrules.functions.RuleDeserializer;
+import com.ververica.field.dynamicrules.functions.RulesStaticJsonGenerator;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +66,8 @@ public class RulesSource {
             .build();
       case SOCKET:
         return new SocketTextStreamFunction("localhost", config.get(SOCKET_PORT), "\n", -1);
+      case STATIC:
+        return new RulesStaticJsonGenerator();
       default:
         throw new IllegalArgumentException(
             "Source \"" + rulesSourceType + "\" unknown. Known values are:" + Type.values());
@@ -89,7 +92,8 @@ public class RulesSource {
   public enum Type {
     KAFKA("Rules Source (Kafka)"),
     PUBSUB("Rules Source (Pub/Sub)"),
-    SOCKET("Rules Source (Socket)");
+    SOCKET("Rules Source (Socket)"),
+    STATIC("Rules Source (Static Ruleset)");
 
     private String name;
 
