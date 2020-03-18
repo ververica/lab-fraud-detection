@@ -43,8 +43,6 @@ public class TransactionsSource {
     TransactionsSource.Type transactionsSourceType =
         TransactionsSource.Type.valueOf(sourceType.toUpperCase());
 
-    int transactionsPerSecond = config.get(RECORDS_PER_SECOND);
-
     if (transactionsSourceType == Type.KAFKA) {
       Properties kafkaProps = KafkaUtils.initConsumerProperties(config);
       String transactionsTopic = config.get(DATA_TOPIC);
@@ -53,6 +51,7 @@ public class TransactionsSource {
       kafkaConsumer.setStartFromLatest();
       return kafkaConsumer;
     } else {
+      int transactionsPerSecond = config.get(RECORDS_PER_SECOND);
       return new JsonGeneratorWrapper<>(new TransactionsGenerator(transactionsPerSecond));
     }
   }
