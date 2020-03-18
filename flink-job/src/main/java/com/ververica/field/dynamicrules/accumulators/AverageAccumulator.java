@@ -19,6 +19,7 @@
 package com.ververica.field.dynamicrules.accumulators;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.apache.flink.annotation.Public;
 import org.apache.flink.api.common.accumulators.Accumulator;
 import org.apache.flink.api.common.accumulators.SimpleAccumulator;
@@ -47,7 +48,7 @@ public class AverageAccumulator implements SimpleAccumulator<BigDecimal> {
     if (this.count == 0) {
       return BigDecimal.ZERO;
     }
-    return this.sum.divide(new BigDecimal(count));
+    return this.sum.divide(new BigDecimal(count), RoundingMode.HALF_UP);
   }
 
   @Override

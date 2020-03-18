@@ -26,6 +26,7 @@ import static com.ververica.field.config.Parameters.LATENCY_TOPIC;
 import com.ververica.field.config.Config;
 import com.ververica.field.dynamicrules.KafkaUtils;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
@@ -58,7 +59,10 @@ public class LatencySink {
         return new DiscardingSink<>();
       default:
         throw new IllegalArgumentException(
-            "Source \"" + latencySinkType + "\" unknown. Known values are:" + Type.values());
+            "Source \""
+                + latencySinkType
+                + "\" unknown. Known values are:"
+                + Arrays.toString(Type.values()));
     }
   }
 

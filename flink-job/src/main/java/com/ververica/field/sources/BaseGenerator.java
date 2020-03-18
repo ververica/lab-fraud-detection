@@ -56,7 +56,7 @@ public abstract class BaseGenerator<T> extends RichParallelSourceFunction<T>
   }
 
   @Override
-  public void open(Configuration parameters) throws Exception {
+  public void open(Configuration parameters) {
     if (id == -1) {
       id = getRuntimeContext().getIndexOfThisSubtask();
     }
@@ -73,6 +73,7 @@ public abstract class BaseGenerator<T> extends RichParallelSourceFunction<T>
     while (running) {
       T event = randomEvent(rnd, id);
 
+      //noinspection SynchronizationOnLocalVariableOrMethodParameter
       synchronized (lock) {
         if (event != null) {
           ctx.collect(event);

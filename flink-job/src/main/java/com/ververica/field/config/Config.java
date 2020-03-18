@@ -34,7 +34,7 @@ public class Config {
     return key.getType().cast(values.get(key));
   }
 
-  public <T> Config(
+  public Config(
       Parameters inputParams,
       List<Param<String>> stringParams,
       List<Param<Integer>> intParams,

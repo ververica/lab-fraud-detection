@@ -45,16 +45,15 @@ public class TransactionsSource {
 
     int transactionsPerSecond = config.get(RECORDS_PER_SECOND);
 
-    switch (transactionsSourceType) {
-      case KAFKA:
-        Properties kafkaProps = KafkaUtils.initConsumerProperties(config);
-        String transactionsTopic = config.get(DATA_TOPIC);
-        FlinkKafkaConsumer011<String> kafkaConsumer =
-            new FlinkKafkaConsumer011<>(transactionsTopic, new SimpleStringSchema(), kafkaProps);
-        kafkaConsumer.setStartFromLatest();
-        return kafkaConsumer;
-      default:
-        return new JsonGeneratorWrapper<>(new TransactionsGenerator(transactionsPerSecond));
+    if (transactionsSourceType == Type.KAFKA) {
+      Properties kafkaProps = KafkaUtils.initConsumerProperties(config);
+      String transactionsTopic = config.get(DATA_TOPIC);
+      FlinkKafkaConsumer011<String> kafkaConsumer =
+          new FlinkKafkaConsumer011<>(transactionsTopic, new SimpleStringSchema(), kafkaProps);
+      kafkaConsumer.setStartFromLatest();
+      return kafkaConsumer;
+    } else {
+      return new JsonGeneratorWrapper<>(new TransactionsGenerator(transactionsPerSecond));
     }
   }
 

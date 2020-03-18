@@ -25,7 +25,7 @@ import org.apache.flink.util.Collector;
 public class TimeStamper<T extends TimestampAssignable<Long>> extends RichFlatMapFunction<T, T> {
 
   @Override
-  public void flatMap(T value, Collector<T> out) throws Exception {
+  public void flatMap(T value, Collector<T> out) {
     value.assignIngestionTimestamp(System.currentTimeMillis());
     out.collect(value);
   }

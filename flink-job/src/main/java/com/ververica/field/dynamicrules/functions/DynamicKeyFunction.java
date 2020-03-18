@@ -90,15 +90,13 @@ public class DynamicKeyFunction
 
   private void handleControlCommand(
       ControlType controlType, BroadcastState<Integer, Rule> rulesState) throws Exception {
-    switch (controlType) {
-      case DELETE_RULES_ALL:
-        Iterator<Entry<Integer, Rule>> entriesIterator = rulesState.iterator();
-        while (entriesIterator.hasNext()) {
-          Entry<Integer, Rule> ruleEntry = entriesIterator.next();
-          rulesState.remove(ruleEntry.getKey());
-          log.trace("Removed {}", ruleEntry.getValue());
-        }
-        break;
+    if (controlType == ControlType.DELETE_RULES_ALL) {
+      Iterator<Entry<Integer, Rule>> entriesIterator = rulesState.iterator();
+      while (entriesIterator.hasNext()) {
+        Entry<Integer, Rule> ruleEntry = entriesIterator.next();
+        rulesState.remove(ruleEntry.getKey());
+        log.trace("Removed {}", ruleEntry.getValue());
+      }
     }
   }
 

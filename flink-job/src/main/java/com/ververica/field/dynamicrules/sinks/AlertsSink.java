@@ -28,6 +28,7 @@ import com.ververica.field.dynamicrules.Alert;
 import com.ververica.field.dynamicrules.KafkaUtils;
 import com.ververica.field.dynamicrules.functions.JsonSerializer;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -61,7 +62,10 @@ public class AlertsSink {
         return new DiscardingSink<>();
       default:
         throw new IllegalArgumentException(
-            "Source \"" + alertsSinkType + "\" unknown. Known values are:" + Type.values());
+            "Source \""
+                + alertsSinkType
+                + "\" unknown. Known values are:"
+                + Arrays.toString(Type.values()));
     }
   }
 

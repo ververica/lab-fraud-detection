@@ -29,7 +29,7 @@ import org.apache.flink.util.Collector;
 @Slf4j
 public class RuleDeserializer extends RichFlatMapFunction<String, Rule> {
 
-  private RuleParser ruleParser;
+  private transient RuleParser ruleParser;
 
   @Override
   public void open(Configuration parameters) throws Exception {
