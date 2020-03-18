@@ -64,7 +64,7 @@ public class CurrentRulesSink {
   }
 
   public static DataStream<String> rulesStreamToJson(DataStream<Rule> alerts) {
-    return alerts.flatMap(new JsonSerializer<>(Rule.class)).name("Rules Deserialization");
+    return alerts.flatMap(new JsonSerializer<>(Rule.class)).name("Rules Serialization");
   }
 
   public enum Type {

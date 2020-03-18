@@ -66,7 +66,7 @@ public class AlertsSink {
   }
 
   public static DataStream<String> alertsStreamToJson(DataStream<Alert> alerts) {
-    return alerts.flatMap(new JsonSerializer<>(Alert.class)).name("Alerts Deserialization");
+    return alerts.flatMap(new JsonSerializer<>(Alert.class)).name("Alerts Serialization");
   }
 
   public enum Type {
