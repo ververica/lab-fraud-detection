@@ -91,8 +91,12 @@ public class DynamicAlertFunction
 
     Rule rule = ctx.getBroadcastState(Descriptors.rulesDescriptor).get(value.getId());
 
-    if (noRuleAvailable(rule)) {
-      log.error("Rule with ID {} does not exist", value.getId());
+    if (rule == null) {
+      // This could happen if the BroadcastState in this CoProcessFunction was updated after it was
+      // updated and used in `DynamicKeyFunction`
+      // TODO: you may want to handle this situation differently, e.g. by versioning rules and
+      //       handling them by the same version throughout the whole pipeline, or by buffering
+      //       events waiting for rules to come through
       return;
     }
 
@@ -193,15 +197,6 @@ public class DynamicAlertFunction
         aggregator.add(aggregatedValue);
       }
     }
-  }
-
-  private boolean noRuleAvailable(Rule rule) {
-    // This could happen if the BroadcastState in this CoProcessFunction was updated after it was
-    // updated and used in `DynamicKeyFunction`
-    if (rule == null) {
-      return true;
-    }
-    return false;
   }
 
   private void updateWidestWindowRule(Rule rule, BroadcastState<Integer, Rule> broadcastState)
