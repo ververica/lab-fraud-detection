@@ -97,13 +97,10 @@ public class RulesEvaluator {
     DataStream<Rule> currentRules =
         ((SingleOutputStreamOperator<Alert>) alerts).getSideOutput(Descriptors.currentRulesSinkTag);
 
-    alerts.print().name("Alert STDOUT Sink");
     allRuleEvaluations.print().setParallelism(1).name("Rule Evaluation Sink");
 
     DataStream<String> alertsJson = AlertsSink.alertsStreamToJson(alerts);
     DataStream<String> currentRulesJson = CurrentRulesSink.rulesStreamToJson(currentRules);
-
-    currentRulesJson.print();
 
     int sinkParallelism = config.get(SINK_PARALLELISM);
 
