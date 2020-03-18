@@ -38,8 +38,7 @@ public class RuleDeserializer extends RichFlatMapFunction<String, Rule> {
   }
 
   @Override
-  public void flatMap(String value, Collector<Rule> out) throws Exception {
-    log.info("{}", value);
+  public void flatMap(String value, Collector<Rule> out) {
     try {
       Rule rule = ruleParser.fromString(value);
       if (rule.getRuleState() != RuleState.CONTROL && rule.getRuleId() == null) {
@@ -47,7 +46,7 @@ public class RuleDeserializer extends RichFlatMapFunction<String, Rule> {
       }
       out.collect(rule);
     } catch (Exception e) {
-      log.warn("Failed parsing rule, dropping it:", e);
+      log.warn("Failed parsing rule {}, dropping it: ", value, e);
     }
   }
 }

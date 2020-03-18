@@ -41,13 +41,12 @@ public class JsonDeserializer<T> extends RichFlatMapFunction<String, T> {
   }
 
   @Override
-  public void flatMap(String value, Collector<T> out) throws Exception {
-    log.info("{}", value);
+  public void flatMap(String value, Collector<T> out) {
     try {
       T parsed = parser.fromString(value);
       out.collect(parsed);
     } catch (Exception e) {
-      log.warn("Failed parsing rule, dropping it:", e);
+      log.warn("Failed parsing {}, dropping it: ", targetClass, e);
     }
   }
 }
