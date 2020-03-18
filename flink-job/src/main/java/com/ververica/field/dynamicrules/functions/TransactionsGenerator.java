@@ -27,11 +27,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TransactionsGenerator extends BaseGenerator<Transaction> {
 
-  private static long MAX_PAYEE_ID = 100000;
-  private static long MAX_BENEFICIARY_ID = 100000;
+  private static final long MAX_PAYEE_ID = 100000;
+  private static final long MAX_BENEFICIARY_ID = 100000;
 
-  private static double MIN_PAYMENT_AMOUNT = 5d;
-  private static double MAX_PAYMENT_AMOUNT = 20d;
+  private static final double MIN_PAYMENT_AMOUNT = 5d;
+  private static final double MAX_PAYMENT_AMOUNT = 20d;
 
   public TransactionsGenerator(int maxRecordsPerSecond) {
     super(maxRecordsPerSecond);
@@ -47,18 +47,15 @@ public class TransactionsGenerator extends BaseGenerator<Transaction> {
     paymentAmountDouble = Math.floor(paymentAmountDouble * 100) / 100;
     BigDecimal paymentAmount = BigDecimal.valueOf(paymentAmountDouble);
 
-    Transaction transaction =
-        Transaction.builder()
-            .transactionId(transactionId)
-            .payeeId(payeeId)
-            .beneficiaryId(beneficiaryId)
-            .paymentAmount(paymentAmount)
-            .paymentType(paymentType(transactionId))
-            .eventTime(System.currentTimeMillis())
-            .ingestionTimestamp(System.currentTimeMillis())
-            .build();
-
-    return transaction;
+    return Transaction.builder()
+        .transactionId(transactionId)
+        .payeeId(payeeId)
+        .beneficiaryId(beneficiaryId)
+        .paymentAmount(paymentAmount)
+        .paymentType(paymentType(transactionId))
+        .eventTime(System.currentTimeMillis())
+        .ingestionTimestamp(System.currentTimeMillis())
+        .build();
   }
 
   private PaymentType paymentType(long id) {

@@ -28,6 +28,7 @@ import com.ververica.field.dynamicrules.KafkaUtils;
 import com.ververica.field.dynamicrules.Rule;
 import com.ververica.field.dynamicrules.functions.JsonSerializer;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -59,7 +60,10 @@ public class CurrentRulesSink {
         return new PrintSinkFunction<>(true);
       default:
         throw new IllegalArgumentException(
-            "Source \"" + currentRulesSinkType + "\" unknown. Known values are:" + Type.values());
+            "Source \""
+                + currentRulesSinkType
+                + "\" unknown. Known values are:"
+                + Arrays.toString(Type.values()));
     }
   }
 

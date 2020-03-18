@@ -30,6 +30,7 @@ import com.ververica.field.dynamicrules.Rule;
 import com.ververica.field.dynamicrules.functions.RuleDeserializer;
 import com.ververica.field.dynamicrules.functions.RulesStaticJsonGenerator;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -70,7 +71,10 @@ public class RulesSource {
         return new RulesStaticJsonGenerator();
       default:
         throw new IllegalArgumentException(
-            "Source \"" + rulesSourceType + "\" unknown. Known values are:" + Type.values());
+            "Source \""
+                + rulesSourceType
+                + "\" unknown. Known values are:"
+                + Arrays.toString(Type.values()));
     }
   }
 
