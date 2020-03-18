@@ -41,13 +41,12 @@ public class JsonSerializer<T> extends RichFlatMapFunction<T, String> {
   }
 
   @Override
-  public void flatMap(T value, Collector<String> out) throws Exception {
-    System.out.println(value);
+  public void flatMap(T value, Collector<String> out) {
     try {
       String serialized = parser.toString(value);
       out.collect(serialized);
     } catch (Exception e) {
-      log.warn("Failed serializing to JSON dropping it:", e);
+      log.warn("Failed serializing {} to JSON, dropping it: ", targetClass, e);
     }
   }
 }

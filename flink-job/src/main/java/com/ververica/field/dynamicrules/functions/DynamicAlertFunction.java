@@ -141,7 +141,7 @@ public class DynamicAlertFunction
   @Override
   public void processBroadcastElement(Rule rule, Context ctx, Collector<Alert> out)
       throws Exception {
-    log.info("{}", rule);
+    log.trace("Processing {}", rule);
     BroadcastState<Integer, Rule> broadcastState =
         ctx.getBroadcastState(Descriptors.rulesDescriptor);
     handleRuleBroadcast(rule, broadcastState);
@@ -171,7 +171,7 @@ public class DynamicAlertFunction
         while (entriesIterator.hasNext()) {
           Entry<Integer, Rule> ruleEntry = entriesIterator.next();
           rulesState.remove(ruleEntry.getKey());
-          log.info("Removed Rule {}", ruleEntry.getValue());
+          log.trace("Removed {}", ruleEntry.getValue());
         }
         break;
     }
