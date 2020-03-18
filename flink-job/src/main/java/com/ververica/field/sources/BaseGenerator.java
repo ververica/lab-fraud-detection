@@ -74,7 +74,9 @@ public abstract class BaseGenerator<T> extends RichParallelSourceFunction<T>
       T event = randomEvent(rnd, id);
 
       synchronized (lock) {
-        ctx.collect(event);
+        if (event != null) {
+          ctx.collect(event);
+        }
         id += numberOfParallelSubtasks;
       }
 
