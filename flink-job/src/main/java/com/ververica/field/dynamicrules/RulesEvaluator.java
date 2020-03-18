@@ -88,16 +88,11 @@ public class RulesEvaluator {
             .uid("DynamicAlertFunction")
             .name("Dynamic Rule Evaluation Function");
 
-    DataStream<String> allRuleEvaluations =
-        ((SingleOutputStreamOperator<Alert>) alerts).getSideOutput(Descriptors.demoSinkTag);
-
     DataStream<Long> latency =
         ((SingleOutputStreamOperator<Alert>) alerts).getSideOutput(Descriptors.latencySinkTag);
 
     DataStream<Rule> currentRules =
         ((SingleOutputStreamOperator<Alert>) alerts).getSideOutput(Descriptors.currentRulesSinkTag);
-
-    allRuleEvaluations.print().setParallelism(1).name("Rule Evaluation Sink");
 
     DataStream<String> alertsJson = AlertsSink.alertsStreamToJson(alerts);
     DataStream<String> currentRulesJson = CurrentRulesSink.rulesStreamToJson(currentRules);
@@ -198,7 +193,6 @@ public class RulesEvaluator {
         new MapStateDescriptor<>(
             "rules", BasicTypeInfo.INT_TYPE_INFO, TypeInformation.of(Rule.class));
 
-    public static final OutputTag<String> demoSinkTag = new OutputTag<String>("demo-sink") {};
     public static final OutputTag<Long> latencySinkTag = new OutputTag<Long>("latency-sink") {};
     public static final OutputTag<Rule> currentRulesSinkTag =
         new OutputTag<Rule>("current-rules-sink") {};
