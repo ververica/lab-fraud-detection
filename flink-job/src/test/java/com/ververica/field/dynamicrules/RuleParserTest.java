@@ -38,7 +38,7 @@ public class RuleParserTest {
 
   @Test
   public void testRuleParsedPlain() throws Exception {
-    String ruleString1 = "1,(active),(taxiId&driverId),,(totalFare),(sum),(>),(5),(20)";
+    String ruleString1 = "1,(active),(taxiId&driverId),(totalFare),(sum),(>),(5),(20)";
 
     RuleParser ruleParser = new RuleParser();
     Rule rule1 = ruleParser.fromString(ruleString1);
@@ -46,7 +46,6 @@ public class RuleParserTest {
     assertEquals("ID incorrect", 1, (int) rule1.getRuleId());
     Assert.assertEquals("Rule state incorrect", RuleState.ACTIVE, rule1.getRuleState());
     assertEquals("Key names incorrect", lst("taxiId", "driverId"), rule1.getGroupingKeyNames());
-    assertEquals("Unique names incorrect", lst(), rule1.getUnique());
     assertEquals("Cumulative key incorrect", "totalFare", rule1.getAggregateFieldName());
     Assert.assertEquals(
         "Aggregator function incorrect",
@@ -65,7 +64,6 @@ public class RuleParserTest {
             + "  \"ruleId\": 1,\n"
             + "  \"ruleState\": \"ACTIVE\",\n"
             + "  \"groupingKeyNames\": [\"taxiId\", \"driverId\"],\n"
-            + "  \"unique\": [],\n"
             + "  \"aggregateFieldName\": \"totalFare\",\n"
             + "  \"aggregatorFunctionType\": \"SUM\",\n"
             + "  \"limitOperatorType\": \"GREATER\",\n"
@@ -79,7 +77,6 @@ public class RuleParserTest {
     assertEquals("ID incorrect", 1, (int) rule1.getRuleId());
     Assert.assertEquals("Rule state incorrect", RuleState.ACTIVE, rule1.getRuleState());
     assertEquals("Key names incorrect", lst("taxiId", "driverId"), rule1.getGroupingKeyNames());
-    assertEquals("Unique names incorrect", lst(), rule1.getUnique());
     assertEquals("Cumulative key incorrect", "totalFare", rule1.getAggregateFieldName());
     Assert.assertEquals(
         "Aggregator function incorrect",

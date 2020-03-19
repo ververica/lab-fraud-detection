@@ -93,7 +93,7 @@ const fields = [
   "windowMinutes",
 ];
 
-// const omitFields = omit(["ruleId", "ruleState", "unique"]);
+// const omitFields = omit(["ruleId", "ruleState"]);
 
 const hasAlert = (alerts: Alert[], rule: Rule) => alerts.some(alert => alert.ruleId === rule.id);
 

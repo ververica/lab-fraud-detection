@@ -34,7 +34,6 @@ public class Rule {
   private Integer ruleId;
   private RuleState ruleState;
   private List<String> groupingKeyNames; // aggregation
-  private List<String> unique;
   private String aggregateFieldName;
   private AggregatorFunctionType aggregatorFunctionType;
   private LimitOperatorType limitOperatorType;
