@@ -18,6 +18,7 @@
 
 package com.ververica.field.dynamicrules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ververica.field.dynamicrules.Rule.AggregatorFunctionType;
 import com.ververica.field.dynamicrules.Rule.LimitOperatorType;
 import com.ververica.field.dynamicrules.Rule.RuleState;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RuleParser {
 

@@ -18,8 +18,8 @@
 
 package com.ververica.field.dynamicrules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonMapper<T> {
 
