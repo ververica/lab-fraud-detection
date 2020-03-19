@@ -44,7 +44,7 @@ public class RulesEvaluatorTest {
   public void shouldProduceKeyedOutput() throws Exception {
     RuleParser ruleParser = new RuleParser();
     Rule rule1 =
-        ruleParser.fromString("1,(active),(paymentType&payeeId),,(totalFare),(SUM),(>),(50),(20)");
+        ruleParser.fromString("1,(active),(paymentType&payeeId),(totalFare),(SUM),(>),(50),(20)");
     Transaction event1 = Transaction.fromString("1,2013-01-01 00:00:00,1001,1002,CSH,21.5,1");
 
     try (BroadcastStreamNonKeyedOperatorTestHarness<
@@ -68,7 +68,7 @@ public class RulesEvaluatorTest {
   @Test
   public void shouldStoreRulesInBroadcastStateDuringDynamicKeying() throws Exception {
     RuleParser ruleParser = new RuleParser();
-    Rule rule1 = ruleParser.fromString("1,(active),(paymentType),,(totalFare),(SUM),(>),(50),(20)");
+    Rule rule1 = ruleParser.fromString("1,(active),(paymentType),(totalFare),(SUM),(>),(50),(20)");
 
     try (BroadcastStreamNonKeyedOperatorTestHarness<
             Transaction, Rule, Keyed<Transaction, String, Integer>>
@@ -92,7 +92,7 @@ public class RulesEvaluatorTest {
   public void shouldOutputSimplestAlert() throws Exception {
     RuleParser ruleParser = new RuleParser();
     Rule rule1 =
-        ruleParser.fromString("1,(active),(paymentType),,(paymentAmount),(SUM),(>),(20),(20)");
+        ruleParser.fromString("1,(active),(paymentType),(paymentAmount),(SUM),(>),(20),(20)");
 
     Transaction event1 = Transaction.fromString("1,2013-01-01 00:00:00,1001,1002,CSH,22,1");
     Transaction event2 = Transaction.fromString("2,2013-01-01 00:00:01,1001,1002,CRD,19,1");
@@ -136,7 +136,7 @@ public class RulesEvaluatorTest {
   public void shouldHandleSameTimestampEventsCorrectly() throws Exception {
     RuleParser ruleParser = new RuleParser();
     Rule rule1 =
-        ruleParser.fromString("1,(active),(paymentType),,(paymentAmount),(SUM),(>),(20),(20)");
+        ruleParser.fromString("1,(active),(paymentType),(paymentAmount),(SUM),(>),(20),(20)");
 
     Transaction event1 = Transaction.fromString("1,2013-01-01 00:00:00,1001,1002,CSH,19,1");
 
@@ -175,7 +175,7 @@ public class RulesEvaluatorTest {
   public void shouldCleanupStateBasedOnWatermarks() throws Exception {
     RuleParser ruleParser = new RuleParser();
     Rule rule1 =
-        ruleParser.fromString("1,(active),(paymentType),,(paymentAmount),(SUM),(>),(10),(4)");
+        ruleParser.fromString("1,(active),(paymentType),(paymentAmount),(SUM),(>),(10),(4)");
 
     Transaction event1 = Transaction.fromString("1,2013-01-01 00:01:00,1001,1002,CSH,3,1");
 

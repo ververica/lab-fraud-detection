@@ -47,7 +47,7 @@ public class RuleParser {
 
   private static Rule parsePlain(String ruleString) throws IOException {
     List<String> tokens = Arrays.asList(ruleString.split(","));
-    if (tokens.size() != 9) {
+    if (tokens.size() != 8) {
       throw new IOException("Invalid rule (wrong number of tokens): " + ruleString);
     }
 
@@ -57,7 +57,6 @@ public class RuleParser {
     rule.setRuleId(Integer.parseInt(stripBrackets(iter.next())));
     rule.setRuleState(RuleState.valueOf(stripBrackets(iter.next()).toUpperCase()));
     rule.setGroupingKeyNames(getNames(iter.next()));
-    rule.setUnique(getNames(iter.next()));
     rule.setAggregateFieldName(stripBrackets(iter.next()));
     rule.setAggregatorFunctionType(
         AggregatorFunctionType.valueOf(stripBrackets(iter.next()).toUpperCase()));

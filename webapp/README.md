@@ -41,7 +41,6 @@ Example Rule JSON:
    "groupingKeyNames":[
       "paymentType"
    ],
-   "unique":[],
    "aggregateFieldName":"paymentAmount",
    "aggregatorFunctionType":"SUM",
    "limitOperatorType":"GREATER",
