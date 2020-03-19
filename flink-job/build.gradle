@@ -50,6 +50,7 @@ ext {
     scalaVersion = '2.11'
     mockitoVersion = '1.10.19'
     junitVersion = '4.12'
+    jacksonVersion = '2.10.3'
 }
 
 sourceCompatibility = javaVersion
@@ -126,6 +127,8 @@ dependencies {
     flinkShadowJar "org.apache.flink:flink-connector-kafka-0.11_$scalaBinaryVersion:$flinkVersion"
     flinkShadowJar "org.apache.flink:flink-connector-gcp-pubsub_$scalaBinaryVersion:$flinkVersion"
     flinkShadowJar group: 'com.google.cloud', name: 'google-cloud-pubsub', version: '1.51.0'
+
+    flinkShadowJar "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
 // make compileOnly dependencies available for tests:

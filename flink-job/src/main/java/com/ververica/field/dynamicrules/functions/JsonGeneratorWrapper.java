@@ -18,10 +18,10 @@
 
 package com.ververica.field.dynamicrules.functions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ververica.field.sources.BaseGenerator;
 import java.util.SplittableRandom;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonGeneratorWrapper<T> extends BaseGenerator<String> {
 
