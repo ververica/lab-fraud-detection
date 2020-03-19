@@ -42,7 +42,6 @@ import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.state.MapStateDescriptor;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.configuration.ConfigConstants;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.BroadcastStream;
@@ -65,12 +64,8 @@ public class RulesEvaluator {
 
   public void run() throws Exception {
 
-    RulesSource.Type rulesSourceType = getRulesSourceType();
-
-    boolean isLocal = config.get(LOCAL_EXECUTION);
-
     // Environment setup
-    StreamExecutionEnvironment env = configureStreamExecutionEnvironment(rulesSourceType, isLocal);
+    StreamExecutionEnvironment env = configureStreamExecutionEnvironment();
 
     // Streams setup
     DataStream<Rule> rulesUpdateStream = getRulesUpdateStream(env);
@@ -158,22 +153,26 @@ public class RulesEvaluator {
     return RulesSource.Type.valueOf(rulesSource.toUpperCase());
   }
 
-  private StreamExecutionEnvironment configureStreamExecutionEnvironment(
-      RulesSource.Type rulesSourceEnumType, boolean isLocal) {
+  private StreamExecutionEnvironment configureStreamExecutionEnvironment() {
+    final boolean isLocal = config.get(LOCAL_EXECUTION);
     Configuration flinkConfig = new Configuration();
-    flinkConfig.setBoolean(ConfigConstants.LOCAL_START_WEBSERVER, true);
 
-    StreamExecutionEnvironment env =
-        isLocal
-            ? StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(flinkConfig)
-            : StreamExecutionEnvironment.getExecutionEnvironment();
+    StreamExecutionEnvironment env;
+    if (isLocal) {
+      env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(flinkConfig);
+      // slower restarts inside the IDE and other local runs
+      env.setRestartStrategy(
+          RestartStrategies.fixedDelayRestart(
+              10, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));
+    } else {
+      env = StreamExecutionEnvironment.getExecutionEnvironment();
+    }
 
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
     env.getCheckpointConfig().setCheckpointInterval(config.get(CHECKPOINT_INTERVAL));
     env.getCheckpointConfig()
         .setMinPauseBetweenCheckpoints(config.get(MIN_PAUSE_BETWEEN_CHECKPOINTS));
 
-    configureRestartStrategy(env, rulesSourceEnumType);
     return env;
   }
 
@@ -187,20 +186,6 @@ public class RulesEvaluator {
     @Override
     public long extractTimestamp(T element) {
       return element.getEventTime();
-    }
-  }
-
-  private void configureRestartStrategy(
-      StreamExecutionEnvironment env, RulesSource.Type rulesSourceEnumType) {
-    switch (rulesSourceEnumType) {
-      case SOCKET:
-        env.setRestartStrategy(
-            RestartStrategies.fixedDelayRestart(
-                10, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));
-        break;
-      default:
-        // Default - unlimited restart strategy.
-        //        env.setRestartStrategy(RestartStrategies.noRestart());
     }
   }
 
