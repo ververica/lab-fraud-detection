@@ -20,8 +20,7 @@ buildscript {
         jcenter() // this applies only to the Gradle 'Shadow' plugin
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.1'
-        // classpath 'com.github.sherter.google-java-format:0.7.1' TODO check if Dummy.java is needed if added
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 }
 
@@ -29,14 +28,14 @@ plugins {
     id 'java'
     id 'application'
     // shadow plugin to produce fat JARs
-    id 'com.github.johnrengelman.shadow' version '4.0.1'
-    id "com.github.sherter.google-java-format" version "0.8"
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "com.github.sherter.google-java-format" version '0.8'
 }
 
 
 // artifact properties
 group = 'com.ververica.field.dynamicrules'
-version = ''
+version = '0.1-SNAPSHOT'
 jar.archiveName = "${jar.baseName}.${jar.extension}"
 mainClassName = 'com.ververica.field.dynamicrules.Main'
 description = """Dynamic Fraud Detection Demo"""
@@ -58,11 +57,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties"]
-
-wrapper {
-    gradleVersion = '4.4'
-}
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j2.properties"]
 
 // declare where to find the dependencies of your project
 repositories {
@@ -94,19 +89,10 @@ dependencies {
     compile "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}"
     compile "org.apache.flink:flink-runtime-web_${scalaBinaryVersion}:${flinkVersion}"
 
-    // --------------------------------------------------------------
-    // Dependencies that should be part of the shadow jar, e.g.
-    // connectors. These must be in the flinkShadowJar configuration!
-    // --------------------------------------------------------------
-    //flinkShadowJar "org.apache.flink:flink-connector-kafka-0.11_${scalaBinaryVersion}:${flinkVersion}"
-
-
-
     compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     compile "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     compile "org.apache.logging.log4j:log4j-jcl:${log4jVersion}"
-
 
     // Test dependencies here.
     // testCompile "junit:junit:4.12"
@@ -118,11 +104,14 @@ dependencies {
     compile "org.mockito:mockito-all:${mockitoVersion}"
 
     //Project dependencies
-    compile "org.projectlombok:lombok:1.18.4"
-//    For Gradle 6 use:
-//    compileOnly 'org.projectlombok:lombok:1.18.10'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
+
+    // --------------------------------------------------------------
+    // Dependencies that should be part of the shadow jar, e.g.
+    // connectors. These must be in the flinkShadowJar configuration!
+    // --------------------------------------------------------------
     flinkShadowJar "org.apache.flink:flink-connector-kafka-0.11_${scalaBinaryVersion}:${flinkVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-gcp-pubsub_${scalaBinaryVersion}:${flinkVersion}"
     flinkShadowJar group: 'com.google.cloud', name: 'google-cloud-pubsub', version: '1.51.0'
