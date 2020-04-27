@@ -20,11 +20,13 @@ package com.ververica.field.dynamicrules;
 
 import static com.ververica.field.config.Parameters.CHECKPOINT_INTERVAL;
 import static com.ververica.field.config.Parameters.LOCAL_EXECUTION;
+import static com.ververica.field.config.Parameters.LOCAL_MODE_DISABLE_WEB_UI;
 import static com.ververica.field.config.Parameters.MIN_PAUSE_BETWEEN_CHECKPOINTS;
 import static com.ververica.field.config.Parameters.OUT_OF_ORDERNESS;
 import static com.ververica.field.config.Parameters.RULES_SOURCE;
 import static com.ververica.field.config.Parameters.SINK_PARALLELISM;
 import static com.ververica.field.config.Parameters.SOURCE_PARALLELISM;
+import static org.apache.flink.configuration.RestOptions.BIND_PORT;
 
 import com.ververica.field.config.Config;
 import com.ververica.field.dynamicrules.functions.AverageAggregate;
@@ -154,18 +156,23 @@ public class RulesEvaluator {
   }
 
   private StreamExecutionEnvironment configureStreamExecutionEnvironment() {
-    final boolean isLocal = config.get(LOCAL_EXECUTION);
-    Configuration flinkConfig = new Configuration();
+    final String localMode = config.get(LOCAL_EXECUTION);
 
     StreamExecutionEnvironment env;
-    if (isLocal) {
+    if (localMode.isEmpty() || localMode.equals(LOCAL_MODE_DISABLE_WEB_UI)) {
+      // cluster mode or disabled web UI
+      env = StreamExecutionEnvironment.getExecutionEnvironment();
+    } else {
+      Configuration flinkConfig = new Configuration();
+      flinkConfig.set(BIND_PORT, localMode);
       env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(flinkConfig);
+    }
+
+    if (!localMode.isEmpty()) {
       // slower restarts inside the IDE and other local runs
       env.setRestartStrategy(
           RestartStrategies.fixedDelayRestart(
               10, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));
-    } else {
-      env = StreamExecutionEnvironment.getExecutionEnvironment();
     }
 
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);

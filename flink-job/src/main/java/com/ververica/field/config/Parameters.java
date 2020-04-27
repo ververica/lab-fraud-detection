@@ -19,6 +19,7 @@
 package com.ververica.field.config;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.flink.api.java.utils.ParameterTool;
 
@@ -91,7 +92,27 @@ public class Parameters {
 
   public static final Param<Integer> RECORDS_PER_SECOND = Param.integer("records-per-second", 2);
 
-  public static final Param<Boolean> LOCAL_EXECUTION = Param.bool("local", false);
+  public static final String LOCAL_MODE_DISABLE_WEB_UI = "-1";
+
+  /**
+   * If specified, the port for the web UI or {@link #LOCAL_MODE_DISABLE_WEB_UI} to disable it.
+   * Accepts
+   *
+   * <ul>
+   *   <li>a list of ports (“50100,50101”),
+   *   <li>ranges (“50100-50200”), or
+   *   <li>a combination of both, or
+   *   <li>"0" to let the system choose a free port
+   * </ul>
+   *
+   * <p>The chosen port will be shown in the logs in a line like this:
+   *
+   * <pre>
+   *  12:11:04.062 [main] INFO o.a.f.r.d.DispatcherRestEndpoint - Web frontend listening at http://localhost:8081.
+   * </pre>
+   */
+  public static final Param<String> LOCAL_EXECUTION =
+      Param.string("local", LOCAL_MODE_DISABLE_WEB_UI);
 
   public static final Param<Integer> SOURCE_PARALLELISM = Param.integer("source-parallelism", 2);
   public static final Param<Integer> SINK_PARALLELISM = Param.integer("sink-parallelism", 1);
@@ -105,6 +126,7 @@ public class Parameters {
 
   public static final List<Param<String>> STRING_PARAMS =
       Arrays.asList(
+          LOCAL_EXECUTION,
           KAFKA_HOST,
           DATA_TOPIC,
           ALERTS_TOPIC,
@@ -134,5 +156,5 @@ public class Parameters {
           MIN_PAUSE_BETWEEN_CHECKPOINTS,
           OUT_OF_ORDERNESS);
 
-  public static final List<Param<Boolean>> BOOL_PARAMS = Arrays.asList(LOCAL_EXECUTION);
+  public static final List<Param<Boolean>> BOOL_PARAMS = Collections.emptyList();
 }
