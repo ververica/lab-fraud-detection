@@ -30,6 +30,7 @@ import com.ververica.field.dynamicrules.functions.JsonSerializer;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.PrintSinkFunction;
@@ -37,6 +38,7 @@ import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.connectors.gcp.pubsub.PubSubSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
+@Slf4j
 public class CurrentRulesSink {
 
   public static SinkFunction<String> createRulesSink(Config config) throws IOException {
@@ -68,7 +70,7 @@ public class CurrentRulesSink {
   }
 
   public static DataStream<String> rulesStreamToJson(DataStream<Rule> alerts) {
-    return alerts.flatMap(new JsonSerializer<>(Rule.class)).name("Rules Serialization");
+    return alerts.flatMap(new JsonSerializer<>(Rule.class, log)).name("Rules Serialization");
   }
 
   public enum Type {
