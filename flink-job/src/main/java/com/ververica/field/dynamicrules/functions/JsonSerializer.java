@@ -19,19 +19,20 @@
 package com.ververica.field.dynamicrules.functions;
 
 import com.ververica.field.dynamicrules.JsonMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
 
-@Slf4j
 public class JsonSerializer<T> extends RichFlatMapFunction<T, String> {
 
   private JsonMapper<T> parser;
   private final Class<T> targetClass;
+  private final Logger log;
 
-  public JsonSerializer(Class<T> sourceClass) {
+  public JsonSerializer(Class<T> sourceClass, Logger log) {
     this.targetClass = sourceClass;
+    this.log = log;
   }
 
   @Override
@@ -43,6 +44,7 @@ public class JsonSerializer<T> extends RichFlatMapFunction<T, String> {
   @Override
   public void flatMap(T value, Collector<String> out) {
     try {
+      log.trace("{}", value);
       String serialized = parser.toString(value);
       out.collect(serialized);
     } catch (Exception e) {
