@@ -83,6 +83,7 @@ public class Parameters {
   public static final Param<Integer> SOCKET_PORT = Param.integer("pubsub-rules-export", 9999);
 
   // General:
+  public static final Param<Integer> DEFAULT_PARALLELISM = Param.integer("parallelism", -1);
   //    source/sink types: kafka / pubsub / socket
   public static final Param<String> RULES_SOURCE = Param.string("rules-source", "SOCKET");
   public static final Param<String> TRANSACTIONS_SOURCE = Param.string("data-source", "GENERATOR");
@@ -147,6 +148,7 @@ public class Parameters {
 
   public static final List<Param<Integer>> INT_PARAMS =
       Arrays.asList(
+          DEFAULT_PARALLELISM,
           KAFKA_PORT,
           SOCKET_PORT,
           RECORDS_PER_SECOND,
