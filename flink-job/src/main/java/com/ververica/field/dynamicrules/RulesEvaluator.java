@@ -19,6 +19,7 @@
 package com.ververica.field.dynamicrules;
 
 import static com.ververica.field.config.Parameters.CHECKPOINT_INTERVAL;
+import static com.ververica.field.config.Parameters.DEFAULT_PARALLELISM;
 import static com.ververica.field.config.Parameters.LOCAL_EXECUTION;
 import static com.ververica.field.config.Parameters.LOCAL_MODE_DISABLE_WEB_UI;
 import static com.ververica.field.config.Parameters.MIN_PAUSE_BETWEEN_CHECKPOINTS;
@@ -165,6 +166,11 @@ public class RulesEvaluator {
       env.setRestartStrategy(
           RestartStrategies.fixedDelayRestart(
               10, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));
+    }
+
+    final Integer parallelism = config.get(DEFAULT_PARALLELISM);
+    if (parallelism > 0) {
+      env.setParallelism(parallelism);
     }
 
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
