@@ -23,7 +23,7 @@ RUN mvn -B -e -o -T 1C verify
 RUN mv target/demo-fraud-webapp*.jar target/demo-fraud-webapp.jar
 
 # --- Main container
-FROM openjdk:8-jdk-alpine as main
+FROM eclipse-temurin:8-jdk-alpine as main
 
 COPY --from=maven-build /home/maven/work/target/demo-fraud-webapp.jar .
 EXPOSE 5656

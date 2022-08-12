@@ -1,4 +1,4 @@
-FROM openjdk:8 AS job-build
+FROM eclipse-temurin:8 AS job-build
 WORKDIR /home/gradle/app/
 
 COPY build.gradle settings.gradle ./
